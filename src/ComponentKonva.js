@@ -32,8 +32,8 @@ const ImageWithIcons = () => {
 
   useEffect(() => {
     const anim = new window.Konva.Animation((frame) => {
-      const scale = Math.sin(frame.time / 1000) + 1; // Example animation logic
-      imageRef.current.scale({ x: scale, y: scale });
+      const scale = 300; // Example animation logic
+      imageRef.current.opacity((Math.sin(frame.time / scale) + 1) / 1);
     });
 
     anim.start();
