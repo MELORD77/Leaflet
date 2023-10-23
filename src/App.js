@@ -1,11 +1,14 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
-import makerPng from "./logo.svg";
+import makerPng from "./assests/camera1.png";
+import planePng from "./assests/plane.png";
+import "./style/marker.css";
 import "leaflet/dist/leaflet.css";
+
 const center = {
-  lat: 51.505,
-  lng: -0.09,
+  lat: 40.415812,
+  lng: 71.005257,
 };
 
 const App = () => {
@@ -13,6 +16,8 @@ const App = () => {
     const [draggable, setDraggable] = useState(false);
     const [position, setPosition] = useState(center);
     const markerRef = useRef(null);
+    const secondMarkerRef = useRef(null); // Separate ref for the second marker
+
     const eventHandlers = useMemo(
       () => ({
         dragend() {
@@ -27,29 +32,33 @@ const App = () => {
     const toggleDraggable = useCallback(() => {
       setDraggable((d) => !d);
     }, []);
-
+    const customIcon = L.icon({
+      iconUrl: makerPng,
+      iconAnchor: [16, 32],
+      iconSize: [64, 64],
+      className: draggable ? "marker-icon animate" : "marker-icon",
+    });
     return (
-      <Marker
-        draggable={draggable}
-        eventHandlers={eventHandlers}
-        position={position}
-        ref={markerRef}
-      >
-        <Popup minWidth={90}>
-          <span onClick={toggleDraggable}>
-            {draggable
-              ? "Marker is draggable"
-              : "Click here to make marker draggable"}
-          </span>
-        </Popup>
-      </Marker>
+      <>
+        <Marker
+          icon={customIcon}
+          draggable={draggable}
+          eventHandlers={eventHandlers}
+          position={[40.415812, 71.005257]}
+          ref={secondMarkerRef}
+        >
+          <Popup minWidth={90}>
+            <span onClick={toggleDraggable}>
+              {draggable
+                ? "Marker is draggable"
+                : "Click here to make marker draggable"}
+            </span>
+          </Popup>
+        </Marker>
+      </>
     );
   }
-  const customIcon = L.icon({
-    iconUrl: makerPng,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-  });
+
   return (
     <div
       style={{
@@ -64,7 +73,7 @@ const App = () => {
     >
       <MapContainer
         style={{
-          width: "700px",
+          width: "800px",
           height: "600px",
           backgroundColor: "GrayText",
           position: "absolute",
@@ -72,20 +81,17 @@ const App = () => {
           top: "50%",
           transform: "translate(-50%, -50%)",
         }}
-        center={[41.350728, 69.219702]}
-        zoom={13}
-        scrollWheelZoom={false}
+        center={center}
+        zoom={30}
+        // scrollWheelZoom={false}
+        // dragging={false}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <img src={makerPng} alt="img" />
-        <Marker position={[41.350728, 69.219702]} icon={customIcon}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
+        {/* <img src={planePng} alt="img" /> */}
+        <DraggableMarker />
       </MapContainer>
     </div>
   );

@@ -1,0 +1,32 @@
+.marker-icon {
+  /* Define your marker icon styles here */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid red;
+  /* background: #00000072; */
+}
+
+.marker-icon.animate {
+  /* Define the animation styles here */
+  animation-name: your-animation;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  /* Add any additional animation properties as needed */
+}
+
+@keyframes your-animation {
+  /* Define the keyframes for your animation */
+  0% {
+    /* Initial state of the marker icon */
+    transform: scale(1);
+  }
+  50% {
+    /* Intermediate state of the marker icon */
+    transform: scale(1.2);
+  }
+  100% {
+    /* Final state of the marker icon */
+    transform: scale(1);
+  }
+}
